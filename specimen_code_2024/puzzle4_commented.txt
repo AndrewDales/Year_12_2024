@@ -1,0 +1,36 @@
+3               Number of symbols allowed (3 symbols)
+Q               Symbols
+T
+X
+3               Number of patterns
+Q,QQ**Q**QQ     Sequence of patterns for a correct 'Q'
+X,X*X*X*X*X
+T,TTT**T**T
+5               Grid size (5 * 50
+,X,Q            Before comma is current symbol, after comma are disallowed symbols (top left can't put X or Q)
+,
+@,
+,
+,
+,
+,
+,
+,
+,
+,
+@,
+,
+,
+,
+,
+,
+,
+@
+,
+,
+,
+,
+,
+,
+0               Current Score
+30              Number of symbols allowed
