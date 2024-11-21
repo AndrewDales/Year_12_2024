@@ -6,7 +6,7 @@ X
 Q,QQ**Q**QQ     Sequence of patterns for a correct 'Q'
 X,X*X*X*X*X
 T,TTT**T**T
-5               Grid size (5 * 50
+5               Grid size (5 * 5)
 ,X,Q            Before comma is current symbol, after comma are disallowed symbols (top left can't put X or Q)
 ,
 @,
