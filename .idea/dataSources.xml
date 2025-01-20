@@ -22,19 +22,13 @@
         </library>
       </libraries>
     </data-source>
-    <data-source source="LOCAL" name="student" uuid="ee3148e7-1c92-4b2d-8c32-a832fd261bf5">
+    <data-source source="LOCAL" name="student" uuid="7a93841e-eeb4-4e3d-9f94-a9405d127706">
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\dalesa.HIGHGATE1\PycharmProjects\Year_12_2024\Database\student.sqlite</jdbc-url>
+      <jdbc-url>jdbc:sqlite:C:\Users\dalesa\OneDrive - Highgate School\Programming Resources\Pycharm\Year_12_2024\Database\student.sqlite</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <libraries>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.45.1/org/xerial/sqlite-jdbc/3.45.1.0/sqlite-jdbc-3.45.1.0.jar</url>
-        </library>
-        <library>
-          <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.45.1/org/slf4j/slf4j-api/1.7.36/slf4j-api-1.7.36.jar</url>
-        </library>
         <library>
           <url>file://$APPLICATION_CONFIG_DIR$/jdbc-drivers/Xerial SQLiteJDBC/3.45.1/org/xerial/sqlite-jdbc/3.45.1.0/sqlite-jdbc-3.45.1.0.jar</url>
         </library>

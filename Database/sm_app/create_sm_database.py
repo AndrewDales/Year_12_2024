@@ -30,9 +30,21 @@ CREATE TABLE IF NOT EXISTS likes (
 );
 """
 
+create_comments_table = """
+CREATE TABLE IF NOT EXISTS comments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, 
+  user_id INTEGER NOT NULL, 
+  post_id integer NOT NULL, 
+  comment TEXT NOT NULL,
+  FOREIGN KEY (user_id) REFERENCES users (id),
+  FOREIGN KEY (post_id) REFERENCES posts (id)
+);
+"""
+
 with sqlite3.connect('sm_app.sqlite') as conn:
     cur = conn.cursor()
     cur.execute(create_users_table)
     cur.execute(create_posts_table)
     cur.execute(create_likes_table)
+    cur.execute(create_comments_table)
     conn.commit()
