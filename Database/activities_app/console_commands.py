@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import Session
-from models import Person
+from models import Person, Activity
 
 # Connect to the activities database
 engine = create_engine('sqlite:///activities.sqlite', echo=True)
@@ -14,4 +14,5 @@ persons[0].last_name = "Smith"
 new_person = Person(first_name='Bob', last_name='Jones')
 # sess.add(new_person)
 sess.commit()
-sess.close()
+
+person_1 = sess.scalars(select(Person)).first()
