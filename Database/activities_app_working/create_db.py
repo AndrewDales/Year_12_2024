@@ -7,4 +7,3 @@ engine = create_engine('sqlite:///activities.sqlite', echo=True)
 Base.metadata.drop_all(engine)
 # create new tables according to the tables in Base
 Base.metadata.create_all(engine)
-

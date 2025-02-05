@@ -1,6 +1,8 @@
 from typing import Optional
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from sqlalchemy import ForeignKey
+
 
 # Base is called an Abstract Base Class - our SQL Alchemy models will inherit from this class
 class Base(so.DeclarativeBase):
@@ -18,6 +20,12 @@ person_activities = sa.Table('person_activities',
                            sa.UniqueConstraint('activity_id', 'person_id')
                            )
 
+class Location(Base):
+    __tablename__ = 'locations'
+    id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
+    room: so.Mapped[str]
+    activities: so.Mapped[list["Activity"]] = so.relationship(back_populates="location")
+
 # Sets up an Activity table, this references "attendees" via the person_activities table.
 # Note that we use the 'new' SQLalchemy 2.0 method of creating columns mapped to python object attributes
 # The column types are set using type hints and additional features can be added with so.mapped_column
@@ -29,6 +37,8 @@ class Activity(Base):
                                                            secondary=person_activities,
                                                            order_by='(Person.last_name, Person.first_name)',
                                                            back_populates="activities")
+    location_id: so.Mapped[Optional[int]] = so.mapped_column(ForeignKey('locations.id'))
+    location: so.Mapped[Location] = so.relationship(back_populates="activities")
 
     # Gives a representation of an Activity (for printing out)
     def __repr__(self) -> str:
@@ -49,9 +59,10 @@ class Person(Base):
 
     # Gives a representation of a Person (for printing out)
     def __repr__(self) -> str:
-        return f"Person(first_name='{self.first_name}', last_name='{self.last_name}')>"
+        return f"Person(first_name='{self.first_name}', last_name='{self.last_name}')"
 
     # Include a method:
     def greeting(self) -> None:
         print(f'{self.first_name} says "hello"!')
+
 

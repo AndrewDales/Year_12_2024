@@ -6,13 +6,13 @@ from models import Person, Activity
 engine = create_engine('sqlite:///activities.sqlite', echo=True)
 
 sess = Session(engine)
-persons = sess.scalars(select(Person)).all()
-vera = sess.scalars(select(Person).where(Person.first_name == 'Vera')).first()
-for person in persons:
-    person.greeting()
-persons[0].last_name = "Smith"
-new_person = Person(first_name='Bob', last_name='Jones')
+# persons = sess.scalars(select(Person)).all()
+# vera = sess.scalars(select(Person).where(Person.first_name == 'Vera')).first()
+# for person in persons:
+#     person.greeting()
+# persons[0].last_name = "Smith"
+# new_person = Person(first_name='Bob', last_name='Jones')
 # sess.add(new_person)
-sess.commit()
+# sess.commit()
 
 person_1 = sess.scalars(select(Person)).first()
