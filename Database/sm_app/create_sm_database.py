@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS posts(
 create_likes_table = """
 CREATE TABLE IF NOT EXISTS likes (
   id INTEGER PRIMARY KEY AUTOINCREMENT, 
-  user_id INTEGER NOT NULL, 
+  user_id INTEGER NOT NULL , 
   post_id integer NOT NULL, 
   FOREIGN KEY (user_id) REFERENCES users (id),
   FOREIGN KEY (post_id) REFERENCES posts (id)
