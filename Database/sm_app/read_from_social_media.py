@@ -20,8 +20,8 @@ select users.id, users.name, posts.description
 from posts
 join users on users.id = posts.user_id"""
 
-# for user in users:
-#     print(user)
+for user in users:
+    print(user)
 
 with sqlite3.connect("sm_app.sqlite") as conn:
     user_posts = execute_read_query(conn, select_user_posts)
