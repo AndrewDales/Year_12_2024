@@ -29,12 +29,24 @@ class Controller:
     def get_posts(self, user_name: str) -> list[dict]:
         with so.Session(bind=self.engine) as session:
             user = session.scalars(sa.select(User).where(User.name == user_name)).one_or_none()
-            posts_info = [{'title' : post.title,
+            posts_info = [{'id': post.id,
+                           'title' : post.title,
                            'description': post.description,
                            'number_likes': len(post.liked_by_users),
                            }
                           for post in user.posts]
         return posts_info
+
+
+    def get_comments(self, post_id) -> list[dict]:
+        with so.Session(bind=self.engine) as session:
+            post = session.get(Post, post_id)
+            comments_info = [{'comment': comment.comment,
+                              'author': comment.user.name,}
+                             for comment in post.comments]
+        return comments_info
+
+
 
 class CLI:
     def __init__(self):
@@ -87,7 +99,7 @@ class CLI:
                        'Logout': self.login}
 
         menu_choice = pyip.inputMenu(list(menu_items.keys()),
-                                     prompt='Select an action\n',
+                                     prompt='\nSelect an action\n',
                                      numbered=True,
                                      )
         menu_items[menu_choice]()
@@ -109,8 +121,19 @@ class CLI:
             print(f'Title: {post["title"]}')
             print(f'Content: {post["description"]}')
             print(f'Likes: {post["number_likes"]}')
+            self.show_comments(post["id"])
         if not posts:
             print('No Posts')
 
+    def show_comments(self, post_id: int):
+        print(f'Comments:')
+        comments = self.controller.get_comments(post_id)
+        for comment in comments:
+            print(f'\t{comment["author"]}: {comment["comment"]}')
+
+
+
+
 
 cli = CLI()
+# controller = Controller()
