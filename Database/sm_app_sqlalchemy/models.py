@@ -2,7 +2,9 @@ import sqlalchemy as sa
 import sqlalchemy.orm as so
 from sqlalchemy.orm import Mapped
 
-Base = so.declarative_base()
+# Base is called an Abstract Base Class - our SQL Alchemy models will inherit from this class
+class Base(so.DeclarativeBase):
+    pass
 
 # Define the likes table as a secondary table
 likes_table = sa.Table(
@@ -39,7 +41,7 @@ class Post(Base):
     comments: so.Mapped[list["Comment"]] = so.relationship(back_populates='post')
 
     def __repr__(self):
-        return f"Post(title='{self.title}', description='{self.description}', user_id={self.user_id})"
+        return f"Post(title='{self.title}', description='{self.description}', user={self.user})"
 
 class Comment(Base):
     __tablename__ = 'comments'
