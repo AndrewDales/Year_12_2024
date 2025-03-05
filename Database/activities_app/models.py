@@ -21,10 +21,13 @@ person_activities = sa.Table('person_activities',
                            )
 
 class Location(Base):
-    __tablename__ = 'locations'
+    __tablename__ = "locations"
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
-    room: so.Mapped[str]
+    room: so.Mapped[str] = so.mapped_column(unique=True)
     activities: so.Mapped[list["Activity"]] = so.relationship(back_populates="location")
+
+    def __repr__(self) -> str:
+        return f"Location(room='{self.room}')"
 
 # Sets up an Activity table, this references "attendees" via the person_activities table.
 # Note that we use the 'new' SQLalchemy 2.0 method of creating columns mapped to python object attributes

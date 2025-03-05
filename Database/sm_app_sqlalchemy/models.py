@@ -41,7 +41,7 @@ class Post(Base):
     comments: so.Mapped[list["Comment"]] = so.relationship(back_populates='post')
 
     def __repr__(self):
-        return f"Post(title='{self.title}', description='{self.description}', user={self.user})"
+        return f"Post(title='{self.title}', description='{self.description}', user={self.user.name})"
 
 class Comment(Base):
     __tablename__ = 'comments'
