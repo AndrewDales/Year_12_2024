@@ -40,6 +40,10 @@ class Post(Base):
                                                               back_populates='liked_posts')
     comments: so.Mapped[list["Comment"]] = so.relationship(back_populates='post')
 
+    @property
+    def number_of_likes(self) -> int:
+        return len(self.liked_by_users)
+
     def __repr__(self):
         return f"Post(title='{self.title}', description='{self.description}', user={self.user.name})"
 

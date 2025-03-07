@@ -1,5 +1,6 @@
 import sqlalchemy as sa
 import sqlalchemy.orm as so
+from functools import partial
 
 from models import User, Post, Comment
 import pyinputplus as pyip
@@ -7,6 +8,7 @@ import pyinputplus as pyip
 class Controller:
     def __init__(self, db_location = 'sqlite:///social_media.db'):
         self.current_user = None
+        self.current_posts = None
         self.engine = sa.create_engine(db_location)
 
     def set_current_user_from_name(self, name):
@@ -35,6 +37,7 @@ class Controller:
                            'number_likes': len(post.liked_by_users),
                            }
                           for post in user.posts]
+            self.current_posts = user.posts
         return posts_info
 
 
@@ -46,6 +49,22 @@ class Controller:
                              for comment in post.comments]
         return comments_info
 
+    def add_post(self, title, description):
+        with so.Session(bind=self.engine) as session:
+            user = session.merge(self.current_user)
+            post = Post(title=title, description=description)
+            user.posts.append(post)
+            session.commit()
+
+    def like_post(self, post_id):
+        with so.Session(bind=self.engine) as session:
+            user = session.merge(self.current_user)
+            post = session.get(Post, post_id)
+            if user in post.liked_by_users:
+                post.liked_by_users.remove(user)
+            else:
+                post.liked_by_users.append(user)
+            session.commit()
 
 
 class CLI:
@@ -93,10 +112,12 @@ class CLI:
         print(f'Name: {self.controller.current_user.name}')
         print(f'Age: {self.controller.current_user.age}')
         print(f'Nationality: {self.controller.current_user.nationality}')
-        self.show_posts(self.controller.current_user.name)
 
-        menu_items = {'Show posts from another user': self.show_posts,
-                       'Logout': self.login}
+        menu_items = {'Show your posts': lambda: self.show_posts(self.controller.current_user.name),
+                      'Show posts from another user': self.show_posts,
+                      'Add post': self.write_post,
+                      'Logout': self.login,
+                      }
 
         menu_choice = pyip.inputMenu(list(menu_items.keys()),
                                      prompt='\nSelect an action\n',
@@ -116,24 +137,51 @@ class CLI:
             user_name = menu_choice
 
         self.show_title(f"{user_name}'s Posts")
-        posts = self.controller.get_posts(user_name)
-        for post in posts:
-            print(f'Title: {post["title"]}')
-            print(f'Content: {post["description"]}')
-            print(f'Likes: {post["number_likes"]}')
-            self.show_comments(post["id"])
-        if not posts:
+        self.controller.get_posts(user_name)
+
+        for post in self.controller.current_posts:
+            print(f'Title: {post.title}')
+            print(f'Content: {post.description}')
+            print(f'Likes: {post.number_of_likes}')
+            self.show_comments(post.id)
+        if not self.controller.current_posts:
             print('No Posts')
 
+        menu_items = {'Like a post': self.select_like_post,
+                      'Comment on a post': None,
+                      'Return to home': self.user_home,
+                      }
+
+        menu_choice = pyip.inputMenu(list(menu_items.keys()),
+                                     prompt='\nSelect an action\n',
+                                     numbered=True,
+                                     )
+        menu_items[menu_choice]()
+
     def show_comments(self, post_id: int):
-        print(f'Comments:')
         comments = self.controller.get_comments(post_id)
-        for comment in comments:
-            print(f'\t{comment["author"]}: {comment["comment"]}')
+        if comments:
+            print(f'Comments:')
+            for comment in comments:
+                print(f'\t{comment["author"]}: {comment["comment"]}')
+        print()
 
+    def write_post(self):
+        title = input('Title: ')
+        content = input('Content: ')
+        self.controller.add_post(title, content)
 
-
-
+    def select_like_post(self):
+        self.show_title("Like posts")
+        print("Select a post")
+        posts = self.controller.current_posts
+        menu_items = {post.description: partial(self.controller.like_post, post.id) for post in posts}
+        menu_items['Return to home'] = self.user_home
+        menu_choice = pyip.inputMenu(list(menu_items.keys()),
+                                     prompt='\nSelect an action\n',
+                                     numbered=True,
+                                     )
+        menu_items[menu_choice]()
 
 cli = CLI()
 # controller = Controller()
