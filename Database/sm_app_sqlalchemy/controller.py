@@ -24,8 +24,8 @@ class Controller:
             user = User(name=name, age=age, gender=gender, nationality=nationality)
             session.add(user)
             session.commit()
-            self.current_user = user
-        return user
+            self.set_current_user_from_name(user.name)
+        return self.current_user
 
     def get_posts(self, user_name: str) -> list[dict]:
         with so.Session(bind=self.engine) as session:
@@ -64,3 +64,10 @@ class Controller:
             else:
                 post.liked_by_users.append(user)
             session.commit()
+
+    def comment_on_post(self, post_id, comment):
+        with so.Session(bind=self.engine) as session:
+            user_id = self.current_user.id
+            post = session.get(Post, post_id)
+            new_comment = Comment(user_id=user_id, comment=comment)
+            post.comments.append(new_comment)

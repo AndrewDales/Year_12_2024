@@ -82,14 +82,25 @@ class TestController:
         names = controller.get_user_names()
         assert names == ['Alice', 'Bob', 'Charlie', 'Diana']
 
+    def test_create_user(self, controller):
+        user = controller.create_user("Mary", 30, "Female", "Dutch")
+        assert controller.current_user.name == "Mary"
+        assert controller.current_user == user
 
-    def test_create_user(self):
-        assert False
-
-    def test_get_posts(self):
-        assert False
+    def test_get_posts(self, controller):
+        alice_posts = controller.get_posts('Alice')
+        assert alice_posts[0] == {'id': 1,
+                                  'title': 'Exploring the Rocky Mountains',
+                                  'description': 'Just returned from an amazing trip to the Rockies! The views were breathtaking and the hikes were exhilarating.',
+                                  'number_likes': 2,
+                                }
+        # print(controller.current_posts)
+        assert(len(controller.current_posts) == 1)
 
     def test_get_comments(self):
+        assert False
+
+    def test_add_comment(self, controller):
         assert False
 
     def test_add_post(self):
