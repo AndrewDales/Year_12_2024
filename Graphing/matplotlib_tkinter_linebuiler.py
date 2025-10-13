@@ -70,7 +70,7 @@ plt.style.use('ggplot')
 # GUI
 # matplotlib.use('TkAgg')
 root = Tk()
-root.title("Sample Sine Wave Graph in Tkinter")
+root.title("Create a line by clicking on points")
 graph_page = GraphFrame(root)
 graph_page.pack()
 root.mainloop()
