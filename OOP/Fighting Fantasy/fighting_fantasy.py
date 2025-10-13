@@ -8,13 +8,18 @@ def dice_sum(num_dice: int = 1, num_sides: int = 6):
 
 class Character:
     """ A Fighting Fantasy Character Object"""
-
     def __init__(self, name, skill=0, stamina=0):
         self.name = name.title()
         self.skill = skill
         self.stamina = stamina
         self.roll = None
         self.score = None
+
+    def __repr__(self):
+        return f"Character('{self.name}', skill={self.skill}, stamina={self.stamina})"
+
+    def __str__(self):
+        return self.name.title()
 
     def find_score(self):
         self.roll = dice_sum(num_dice=2)
@@ -50,12 +55,6 @@ class Character:
             self.stamina = 0
         else:
             self.stamina = max(self.stamina, 1)
-
-    def __repr__(self):
-        return f"Character('{self.name}', skill={self.skill}, stamina={self.stamina})"
-
-    def __str__(self):
-        return self.name.title()
 
     def return_character_status(self):
         return f"{self.name} has skill {self.skill} and stamina {self.stamina}"
