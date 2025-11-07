@@ -20,6 +20,9 @@ person_activities = sa.Table('person_activities',
                            sa.UniqueConstraint('activity_id', 'person_id')
                            )
 
+# Sets up a locations table with an id and name and a list of activities
+# There is a one-to-many relationship between locations and activities. This means 
+# that each activity can only have one location, but each location can house many activities.
 class Location(Base):
     __tablename__ = "locations"
     id: so.Mapped[int] = so.mapped_column(primary_key=True, autoincrement=True)
