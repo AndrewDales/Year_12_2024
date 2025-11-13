@@ -41,10 +41,10 @@ class Climber(Base):
         secondary="climber_route",
         back_populates="climbed_by",
         # overlaps="climber, route",
-        viewonly=True,
+        # viewonly=True,
     )
 
-    # association between Parent -> Association -> Child
+    # association between Climber -> ClimberRoutes -> Routes
     route_associations: Mapped[List["ClimberRoute"]] = relationship(
         back_populates="climber",
         # overlaps="routes_climbed"
@@ -62,7 +62,7 @@ class Route(Base):
         secondary="climber_route",
         back_populates="routes_climbed",
         # overlaps="climber, route",
-        viewonly=True,
+        # viewonly=True,
     )
 
     # association between Route -> ClimberRoute -> Climber
