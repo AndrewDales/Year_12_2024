@@ -8,7 +8,6 @@ class CLI:
         self.controller = Controller()
         self.current_menu = self.login
         self.running = True
-
         self.run_menus()
 
     @staticmethod
@@ -138,5 +137,6 @@ class CLI:
         print('Commenting not yet implemented')
         return self.user_home
 
-cli = CLI()
+if __name__ == '__main__':
+    cli = CLI()
 # controller = Controller()

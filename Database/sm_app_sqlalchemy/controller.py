@@ -71,3 +71,6 @@ class Controller:
             post = session.get(Post, post_id)
             new_comment = Comment(user_id=user_id, comment=comment)
             post.comments.append(new_comment)
+
+if __name__ == '__main__':
+    controller = Controller()
